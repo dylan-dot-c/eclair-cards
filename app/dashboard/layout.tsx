@@ -1,10 +1,9 @@
-import { ReactElement } from "react";
 // import Link from "next/link";
 import DashboardNavbar from "@/components/dashboard-navbar";
 import Sidebar from "@/components/sidebar";
 
 type Props = {
-  children: ReactElement[];
+  children: React.ReactNode;
 };
 
 const layout = ({ children }: Props) => {
