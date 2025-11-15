@@ -1,5 +1,5 @@
 import NewDeckModal from "@/components/NewDeckModal";
-import NoDecks from "@/components/no-decks";
+import UserDecks from "@/components/UserDecks";
 
 import React from "react";
 
@@ -11,7 +11,7 @@ const page = () => {
 
       <hr className="mt-4 border-2 border-slate-300 rounded-full w-3/4 mx-auto" />
 
-      <NoDecks />
+      <UserDecks />
     </div>
   );
 };

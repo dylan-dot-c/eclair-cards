@@ -14,7 +14,6 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { Checkbox } from "./ui/checkbox";
 import { createClient } from "@/lib/supabase/client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -112,14 +111,6 @@ const NewDeckModal = () => {
                 required
                 autoFocus
               />
-            </div>
-            <div className="flex gap-2 items-center">
-              <Checkbox
-                id="ispublic"
-                checked={isPublic}
-                onCheckedChange={(checked) => setIsPublic(checked as boolean)}
-              />
-              <Label htmlFor="ispublic">Make Public</Label>
             </div>
           </div>
           <DialogFooter>

@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
-import { useEffect, useState, use } from "react";
+import { useEffect, useState, use, FormEvent } from "react";
 
 type Props = {
   params: Promise<{ deck_id: string }>;
@@ -41,14 +41,43 @@ const Page = ({ params }: Props) => {
 
     console.log(data, error);
     setName(data.name);
-    setDescription(data.description);
+    setDescription(data.description ?? "");
     setIsPublic(data.isPublic);
-    setSubject(data.subject);
+    setSubject(data.subject ?? "");
   };
 
   useEffect(() => {
     getDeckInformation();
-  });
+  }, [deck_id]);
+
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // setSaving(true); // Add loading state
+
+    try {
+      const { data, error } = await supabase
+        .from("decks")
+        .update({
+          name,
+          description,
+          subject,
+          is_public: isPublic,
+        })
+        .eq("deck_id", deck_id) // Changed from "deck_id" to "id"
+        .select() // Add this to return updated data
+        .single();
+
+      if (error) throw error;
+
+      alert("✓ Changes saved successfully!");
+      console.log("Updated data:", data);
+    } catch (error) {
+      console.error("Save error:", error);
+      alert("Failed to save changes: " + (error as Error).message);
+    } finally {
+      // setSaving(false);
+    }
+  };
 
   return (
     <div>
@@ -59,20 +88,38 @@ const Page = ({ params }: Props) => {
             <h2>Deck Information</h2>
           </AccordionTrigger>
           <AccordionContent>
-            <form className="flex flex-col gap-4 ">
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={(e) => handleFormSubmit(e)}
+            >
               <div>
                 <Label>Name</Label>
-                <Input type="text" value={name} />
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Name of deck"
+                />
               </div>
               <div>
                 <Label>Description</Label>
-                <Input type="text" value={description} />
+                <Input
+                  type="text"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Enter Deck Description"
+                />
               </div>
               <div>
                 <Label>Subject</Label>
-                <Input type="text" value={subject} />
+                <Input
+                  type="text"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  placeholder="Enter subject/class of deck"
+                />
               </div>
-              <div>
+              <div className="flex gap-2 items-center">
                 <Checkbox checked={isPublic} />
                 <Label>Make Public</Label>
               </div>
