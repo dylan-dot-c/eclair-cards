@@ -42,3 +42,21 @@ export const getAllPublicDecks = async (supabase: SupabaseClient<Database>) => {
 
   return data as DeckCount[];
 };
+
+export const getDeckInformation = async (
+  supabase: SupabaseClient<Database>,
+  deck_id: string
+) => {
+  const { data, error } = await supabase
+    .from("decks")
+    .select("*")
+    .eq("deck_id", deck_id)
+    .single();
+
+  if (error) {
+    alert("Failed to fetch data!!");
+    return;
+  }
+
+  return data;
+};

@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState, use, FormEvent } from "react";
+import { getDeckInformation } from "@/lib/supabase/queries/decks";
 
 type Props = {
   params: Promise<{ deck_id: string }>;
@@ -27,28 +28,20 @@ const Page = ({ params }: Props) => {
 
   const supabase = createClient();
 
-  const getDeckInformation = async () => {
-    const { data, error } = await supabase
-      .from("decks")
-      .select("*")
-      .eq("deck_id", deck_id)
-      .single();
-
-    if (error) {
-      alert("Failed to fetch data!!");
-      return;
-    }
-
-    console.log(data, error);
-    setName(data.name);
-    setDescription(data.description ?? "");
-    setIsPublic(data.isPublic);
-    setSubject(data.subject ?? "");
-  };
-
   useEffect(() => {
-    getDeckInformation();
-  }, [deck_id]);
+    const getData = async () => {
+      const data = await getDeckInformation(supabase, deck_id);
+
+      if (data) {
+        setName(data.name);
+        setDescription(data.description ?? "");
+        setIsPublic(data.is_public);
+        setSubject(data.subject ?? "");
+      }
+    };
+
+    getData();
+  }, [supabase, deck_id]);
 
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
