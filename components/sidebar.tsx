@@ -1,4 +1,5 @@
 import { Home, FolderPlus, CreditCard } from "lucide-react";
+import { LogoutButton } from "./logout-button";
 
 const Sidebar = () => {
   return (
@@ -11,6 +12,10 @@ const Sidebar = () => {
       </div>
       <div className="flex gap-4 flex-nowrap bg-orange-500 p-2 rounded-full">
         <CreditCard /> <p className="hidden">All Decks</p>
+      </div>
+
+      <div className="flex gap-4 flex-nowrap bg-orange-700 rounded-full">
+        <LogoutButton />
       </div>
     </aside>
   );

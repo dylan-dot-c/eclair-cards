@@ -60,3 +60,12 @@ export const getDeckInformation = async (
 
   return data;
 };
+
+export const deleteDeck = async (
+  supabase: SupabaseClient<Database>,
+  deck_id: string
+) => {
+  const response = await supabase.from("decks").delete().eq("deck_id", deck_id);
+
+  return response.status;
+};

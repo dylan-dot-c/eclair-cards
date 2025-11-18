@@ -5,18 +5,23 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  CardAction,
 } from "@/components/ui/card";
 import { WalletCards, Edit, LockIcon, LockOpenIcon } from "lucide-react";
 
-import type { DeckCount } from "@/lib/supabase/queries/decks";
+import { type DeckCount } from "@/lib/supabase/queries/decks";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { deleteDeck } from "@/app/actions/deleteDeck";
+import DeleteDeckButton from "./DeleteDeckButton";
 
 type Props = {
   deck: DeckCount;
 };
-const Deck = ({ deck }: Props) => {
+const Deck = async ({ deck }: Props) => {
+  const handleDelete = async () => {
+    "use server";
+    await deleteDeck(deck.deck_id);
+  };
   return (
     <Card className="">
       <CardHeader className="flex item-center">
@@ -34,14 +39,18 @@ const Deck = ({ deck }: Props) => {
         <WalletCards />
         {deck.flashcards[0].count} FlashCards
       </CardContent>
-      <CardAction>
+
+      <div className="flex gap-4">
         <Link href={`/dashboard/decks/${deck.deck_id}/edit`}>
-          <Button variant={"link"}>
+          <Button variant={"secondary"}>
             <Edit />
             Edit Deck
           </Button>
         </Link>
-      </CardAction>
+
+        <DeleteDeckButton onDelete={handleDelete} />
+      </div>
+
       <CardFooter>
         <p>{deck.is_public ? "Public" : "Private"}</p>
       </CardFooter>

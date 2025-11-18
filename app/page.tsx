@@ -2,10 +2,24 @@ import { DeployButton } from "@/components/deploy-button";
 import { AuthButton } from "@/components/auth-button";
 import { Hero } from "@/components/hero";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { getAllPublicDecks } from "@/lib/supabase/queries/decks";
+import { createClient } from "@/lib/supabase/server";
+import Deck from "@/components/Deck";
+import { Input } from "@/components/ui/input";
 
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+
+  let data;
+
+  try {
+    data = await getAllPublicDecks(supabase);
+  } catch (error) {
+    alert(error);
+  }
+
   return (
     <main className="min-h-screen flex flex-col items-center">
       <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -22,7 +36,17 @@ export default function Home() {
         </nav>
         <div>
           <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4"></main>
+          <main className="flex-1 flex flex-col gap-6 px-4">
+            <div>
+              <Input type="search" />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              {data?.map((deck) => {
+                return <Deck key={deck.deck_id} deck={deck} />;
+              })}
+            </div>
+          </main>
         </div>
 
         <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">

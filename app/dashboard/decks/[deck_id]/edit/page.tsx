@@ -13,6 +13,8 @@ import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState, use, FormEvent } from "react";
 import { getDeckInformation } from "@/lib/supabase/queries/decks";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 type Props = {
   params: Promise<{ deck_id: string }>;
@@ -74,6 +76,13 @@ const Page = ({ params }: Props) => {
 
   return (
     <div>
+      <Link
+        href="/dashboard"
+        className="bg-slate-700 p-2 rounded-md flex gap-2 w-fit"
+      >
+        <ArrowLeft />
+        Dashboard
+      </Link>
       <h2>Edit Deck</h2>
       <Accordion type="single" collapsible className="max-w-96">
         <AccordionItem value="item-1">
@@ -113,8 +122,12 @@ const Page = ({ params }: Props) => {
                 />
               </div>
               <div className="flex gap-2 items-center">
-                <Checkbox checked={isPublic} />
-                <Label>Make Public</Label>
+                <Checkbox
+                  id="is-public"
+                  checked={isPublic}
+                  onCheckedChange={(checked) => setIsPublic(checked as boolean)}
+                />
+                <Label htmlFor="is-public">Make Public</Label>
               </div>
               <Button type="submit">Save Changes</Button>
             </form>
