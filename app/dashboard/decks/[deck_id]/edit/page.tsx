@@ -15,6 +15,7 @@ import { useEffect, useState, use, FormEvent } from "react";
 import { getDeckInformation } from "@/lib/supabase/queries/decks";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import NewCardForm from "@/components/NewCardForm";
 
 type Props = {
   params: Promise<{ deck_id: string }>;
@@ -136,6 +137,8 @@ const Page = ({ params }: Props) => {
       </Accordion>
 
       <p>{deck_id}</p>
+      <NewCardForm deckID={deck_id} />
+      {/* Current Flashcards */}
     </div>
   );
 };

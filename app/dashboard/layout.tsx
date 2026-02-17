@@ -9,10 +9,9 @@ type Props = {
 const layout = ({ children }: Props) => {
   //   const pathname = router.usePathname();
   return (
-    <div>
-      <DashboardNavbar />
+    <div className="flex">
       <Sidebar />
-      <main className=" ml-20 mt-20 p-4">{children}</main>
+      <main className="p-4 w-full">{children}</main>
     </div>
   );
 };

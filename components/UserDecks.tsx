@@ -42,11 +42,11 @@ const UserDecks = async () => {
   }
 
   return (
-    <section className="flex flex-col gap-4 mt-4">
+    <>
       {decks.map((deck) => {
         return <Deck key={deck.deck_id} deck={deck} />;
       })}
-    </section>
+    </>
   );
 };
 
